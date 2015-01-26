@@ -1,0 +1,46 @@
+<div class="container">
+  <h2>Game</h2>
+
+    <style>
+.card {
+    margin: 3px;
+    padding: 3px;
+    border-style: solid;
+    border-width: 1px;
+}
+.card-blue {
+    border-color: blue;
+    color: blue;
+}
+.card-red {
+    border-color: red;
+    color: red;
+}
+.card-placed {
+    padding: 4px;
+}
+.card-removed  {
+    color: transparent !important;
+    border-color: transparent !important;
+}
+.card-selected  {
+    border-width: 2px;
+}
+    </style>
+
+    <table>
+      <tr ng-repeat="row in board">
+        <td ng-repeat="cell in row" ng-click="playCell(cell)" >
+
+            <!--
+                <span class="glyphicon glyphicon-{{ cell.shape }} card card-{{ cell.state }} card-{{ cell.color }}"></span>
+            -->
+                <span class="{{ cell | render }}"></span>
+
+        </td>
+      </tr>
+    </table>
+    <br>
+
+</div>
+
