@@ -15,13 +15,16 @@ describe('Controller: GameController', function () {
                    { id: 2, card: { id: 2, shape: 'heart', color: 'blue' }, state: 'placed'}
                  ],
                  [
-                   { id: 3, card: { id: 3, shape: 'star', color: 'red' }, state: 'placed'},
-                   { id: 4, card: { id: 4, shape: 'star', color: 'blue' }, state: 'placed'}
+                   { id: 3, card: { id: 1, shape: 'heart', color: 'red' }, state: 'placed'},
+                   { id: 4, card: { id: 2, shape: 'heart', color: 'blue' }, state: 'placed'}
                  ]
                ];
     var boardDependency =  {
-      board: function () {
-        return board;
+      sortedCells : function() {
+        var cells = board.reduce(function(acc, row){
+         return acc.concat(row);
+        });
+        return cells;
       },
       deal: function (anl,anc) {
         nl = anl;
@@ -43,17 +46,71 @@ describe('Controller: GameController', function () {
     });
   }));
 
+  function getSortedCells(board) {
+    var cells = board.reduce(function(acc, row){
+      return acc.concat(row);
+    });
+
+    function compareByCardId (a, b) {
+      return a.card.id - b.card.id;
+    }
+
+    return cells.sort(compareByCardId);
+  }
+
+  function checkBoardInitialState() {
+      var board = scope.board;
+      expect(board.length).toBe(2);
+      expect(board[0].length).toBe(2);
+      expect(board[1].length).toBe(2);
+      expect(board[0][0].state).toBe('placed');
+      expect(board[0][1].state).toBe('placed');
+      expect(board[1][0].state).toBe('placed');
+      expect(board[1][1].state).toBe('placed');
+  }
+
   describe('On init', function () {
 
     it('should create a board', function () {
-      expect(scope.board.length).toBeGreaterThan(1);
+      checkBoardInitialState();
+    });
+
+
+    it('does not have a selectedCell', function () {
+      expect(scope.selectedCell).toBeNull();
+    });
+
+    it('game is not completed', function () {
+      expect(scope.completed).toBe(false);
     });
 
   });
-/*
+
+  describe('On New Game', function () {
+
+    beforeEach( function () {
+      scope.newGame();
+    });
+
+    it('should create a board', function () {
+      checkBoardInitialState();
+    });
+
+    it('does not have a selectedCell', function () {
+      expect(scope.selectedCell).toBeNull();
+    });
+
+    it('game is not completed', function () {
+      expect(scope.completed).toBe(false);
+    });
+
+  });
+
   describe('When user clicks a cell while no other cell is selected', function () {
 
     it('if cell is placed it becomes selected', function () {
+      expect(scope.selectedCell).toBeNull();
+
       var cell1 = scope.board[0][0];
       expect(cell1.state).toBe('placed');
 
@@ -72,23 +129,66 @@ describe('Controller: GameController', function () {
       scope.playCell(cell1);
       expect(cell1.state).toBe('placed');
     });
-  });*/
-  /*
+  });
+
   describe('When user clicks a cell while another cell is selected', function () {
 
-    it('if cell is selected and another cell is selected both become removed', function () {
-      var cell1 = scope.board[0][0];
-      var cell2 = scope.board[0][1];
+
+    it('if they match both become removed and no cell is selected', function () {
+      var cells = getSortedCells(scope.board);
+      var cell1 = cells[0];
+      var cell2 = cells[1];
+      expect(cell1.card.id).toBe(cell2.card.id);
       expect(cell1.state).toBe('placed');
+      expect(cell2.state).toBe('placed');
 
       scope.playCell(cell1);
       expect(cell1.state).toBe('selected');
+      expect(scope.selectedCell).toBe(cell1);
 
       scope.playCell(cell2);
       expect(cell1.state).toBe('removed');
       expect(cell2.state).toBe('removed');
+      expect(scope.selectedCell).toBeNull();
     });
 
-  });*/
+
+    it('if they do not match last becomes selected', function () {
+      var cells = getSortedCells(scope.board);
+      var cell1 = cells[0];
+      var cell2 = cells[2];
+      expect(cell1.card.id).not.toBe(cell2.card.id);
+      expect(cell1.state).toBe('placed');
+      expect(cell2.state).toBe('placed');
+
+      scope.playCell(cell1);
+      expect(cell1.state).toBe('selected');
+      expect(scope.selectedCell).toBe(cell1);
+
+      scope.playCell(cell2);
+      expect(cell1.state).toBe('placed');
+      expect(cell2.state).toBe('selected');
+      expect(scope.selectedCell).toBe(cell2);
+    });
+
+  });
+
+
+  describe('When user removed all cards', function () {
+
+    it('game is completed', function () {
+      expect(scope.completed).toBe(false);
+      var cells = getSortedCells(scope.board);
+
+      scope.playCell(cells[0]);
+      scope.playCell(cells[1]);
+
+      scope.playCell(cells[2]);
+      scope.playCell(cells[3]);
+
+      expect(scope.completed).toBe(true);
+    });
+  });
 
 });
+

@@ -12,37 +12,60 @@
 angular.module('mytodoApp')
   .controller('GameController', function ($scope, $window, boardService) {
 
-    var selectedCell = null;
-    //var card1 = { 'color': 'blue', 'shape': 'heart' };
 
-    boardService.deal(2,2);
-    $scope.board = boardService.board();
+    var nbRows = 5;
+    var nbColumns = 8;
 
-    $scope.isPlayable = function (cell) {
+    $scope.board;
+    $scope.completed;
+    $scope.selectedCell;
 
+
+    $scope.newGame = function () {
+      $scope.board = boardService.deal(nbRows, nbColumns);
+      $scope.selectedCell = null;
+      $scope.completed = false;
+    };
+    $scope.newGame();
+
+
+    function checkCompleted () {
+      $scope.completed = $scope.board.reduce( function(acc, row) {
+        var lineCompleted = row.reduce( function(acc, cell) {
+          return acc && cell.state === 'removed';
+        }, true);
+        return acc && lineCompleted;
+      }, true);
     }
 
     $scope.playCell = function (cell) {
-      /*
-      if (selectedCell !== null) {
-        $window.alert(selectedCell.id);
-      }
-      if (selectedCell !== null) {
-        $window.alert(selectedCell.id + ' ' + cell.match(selectedCell));
-      }*/
-/*
-      if (selectedCell !== null && boardService.match(cell,selectedCell) ) {
-        cell.state = 'removed';
-        selectedCell.remove();
-        selectedCell = null;
-        $window.alert('Ok');
-      } else {
-        selectedCell = cell;
-        if (cell.state !== 'removed') {
-          cell.select();
+
+      if ($scope.selectedCell === null) {
+        if (cell.state === 'placed') {
+          cell.state = 'selected';
+          $scope.selectedCell = cell;
         }
+      } else if ($scope.selectedCell !== null) {
+        if (cell === $scope.selectedCell) {
+          cell.state = 'placed';
+          $scope.selectedCell = null;
+        } else {
+          if (cell.card.id === $scope.selectedCell.card.id) {
+            $scope.selectedCell.state = 'removed';
+            cell.state = 'removed';
+            $scope.selectedCell = null;
+            checkCompleted();
+          } else {
+            $scope.selectedCell.state = 'placed';
+            cell.state = 'selected';
+            $scope.selectedCell = cell;
+          }
+
+        }
+
       }
-*/
+
+
     };
 
   });

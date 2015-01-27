@@ -47,7 +47,7 @@ describe('Main view End-2-End', function() {
     describe('When user select a player ', function() {
 
       it('should be taken to the game view', function() {
-         var playButton = playerTable[0].element(.by.css('.btn-primary'));
+         var playButton = playerTable[0].element(by.css('.btn-primary'));
          element(playButton).click();
 
          expect(element(by.tagName('h2'))).toBe('Game')

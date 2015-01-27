@@ -8,13 +8,35 @@
     border-style: solid;
     border-width: 1px;
 }
+.card-purple {
+    border-color: #9881F5;
+    color: #9881F5;
+    ;border-color: #7A0D7A;
+    ;color: #7A0D7A;
+}
+.card-green {
+    border-color: #9DBC06;
+    color: #9DBC06;
+}
+.card-pink {
+    border-color: #F22F69;
+    color: #F22F69;
+}
+.card-orange {
+    border-color: #F5930E;
+    color: #F5930E;
+}
 .card-blue {
-    border-color: blue;
-    color: blue;
+    border-color: #2F5168;
+    color: #2F5168;
+}
+.card-cyan {
+    border-color: #4DB3B3;
+    color: #4DB3B3;
 }
 .card-red {
-    border-color: red;
-    color: red;
+    border-color: #E64A45;
+    color: #E64A45;
 }
 .card-placed {
     padding: 4px;
@@ -26,21 +48,31 @@
 .card-selected  {
     border-width: 2px;
 }
+.wingame {
+    font-size: 2em;
+    font-family: Verdana, Arial, sans;
+    font-style: italic;
+    color: #E64A45;
+}
     </style>
 
-    <table>
-      <tr ng-repeat="row in board">
-        <td ng-repeat="cell in row" ng-click="playCell(cell)" >
+    <div ng-show="completed">
+        <p class="wingame">You win !</p>
+        <button class="btn btn-primary" ng-click="newGame()" >New Game</button>
+    </div>
 
-            <!--
+
+    <table>
+        <tr ng-repeat="row in board">
+            <td ng-repeat="cell in row" ng-click="playCell(cell)" >
+                <!--
                 <span class="glyphicon glyphicon-{{ cell.shape }} card card-{{ cell.state }} card-{{ cell.color }}"></span>
-            -->
+                -->
                 <span class="{{ cell | render }}"></span>
 
-        </td>
-      </tr>
+            </td>
+        </tr>
     </table>
     <br>
-
 </div>
 

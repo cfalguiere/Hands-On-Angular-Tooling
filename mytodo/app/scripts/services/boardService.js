@@ -10,29 +10,44 @@ angular.module('mytodoApp')
     }
 
     var board;
+    var nbLines;
+    var nbCols;
 
-    this.board = function() {
-      return board;
-    };
-
-    this.cells = function() {
+    this.sortedCellsByCardId = function() {
       var cells = board.reduce(function(acc, row){
          return acc.concat(row);
       });
-      return cells;
-    };
-
-    this.deal = function(nbLines, nbCols) {
-      board = [];
-
-      var cells = [];
-      var nbCells = nbLines * nbCols;
-      var id = 1;
-      for (var i = 0; i < nbCols; i++) {
-        cells.push( new Cell(id++, cardsFactory[i]) );
-        cells.push( new Cell(id++, cardsFactory[i]) );
+      function compareByCardId (a, b) {
+        return a.card.id - b.card.id;
       }
 
+      return cells.sort(compareByCardId);
+    };
+
+    //@ http://jsfromhell.com/array/shuffle [v1.0]
+    function shuffle (o) {
+        for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x) {
+        }
+        return o;
+    }
+
+    function dealCells (cards) {
+      var cells = [];
+      var nbCells = nbLines * nbCols;
+      var nbCards = cards.length;
+      var cardIndex = 0;
+      for (var cellId = 1; cellId <= nbCells; cardIndex++) {
+        if (cardIndex >= nbCards) {
+          cardIndex = 0;
+        }
+        cells.push( new Cell(cellId++, cards[cardIndex]) );
+        cells.push( new Cell(cellId++, cards[cardIndex]) );
+      }
+      return cells;
+    }
+
+    function makeBoard (cells) {
+      board = [];
       var i = 0;
       for (var l = 0; l < nbLines; l++) {
         var row = [];
@@ -43,6 +58,16 @@ angular.module('mytodoApp')
       }
 
       return board;
+    }
+
+    this.deal = function(aNbLines, aNbCols) {
+
+      nbLines = aNbLines;
+      nbCols = aNbCols;
+      var cards = shuffle(cardsFactory);
+      var shuffledCells = shuffle(dealCells(cards));
+      return makeBoard(shuffledCells);
+
     };
 
     this.match = function(cell1, cell2) {

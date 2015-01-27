@@ -10,8 +10,8 @@ angular.module('mytodoApp')
        this.color = aColor;
     }
 
-    var colors = [ 'blue', 'red' ];
-    var shapes = [ 'heart', 'star' ];
+    var colors = [ 'blue', 'cyan', 'purple', 'green', 'pink', 'orange', ]; //red
+    var shapes = [ 'heart', 'star', 'music', 'headphones', 'cloud', 'flag' ];
 
     var cards = [];
 

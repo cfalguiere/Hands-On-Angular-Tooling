@@ -21,19 +21,8 @@ describe('Services : boardService', function(){
 
         it('set the board', inject(function(boardService){
 
-          boardService.deal(2,3);
-          expect(boardService.cells).toBeDefined();
-          expect(boardService.board).toBeDefined();
-
-        }));
-
-        it('has 6 cells', inject(function(boardService){
-
-          boardService.deal(2,3);
-          var cells = boardService.cells();
-          expect(cells.length).toBe(6);
-          expect(cells[0].id).toBeDefined();
-          expect(cells[0].card.id).toBeDefined();
+          var board = boardService.deal(2,3);
+          expect(board).toBeDefined();
 
         }));
 
@@ -50,20 +39,16 @@ describe('Services : boardService', function(){
         it('has pairs', inject(function(boardService){
 
           boardService.deal(2,4);
-          var cells = boardService.cells();
+          var cells = boardService.sortedCellsByCardId();
 
           expect(cells.length).toBe(8);
           expect(cells[0].card.id).toBe(1);
 
-          function compareByCardId (a, b) {
-              return b.card.id - a.card.id;
-          }
-
-          cells.sort(compareByCardId);
-
           var nbPairs = 0;
-          for (var i=0; i<cells.length; i+2) {
-            nbPairs += (cells[i].card.id === cells[i+1].card.id ? 1 : 0);
+          for (var i=0; i<cells.length; i+=2) {
+            if (cells[i].card.id === cells[i+1].card.id) {
+              nbPairs++;
+            }
           }
 
           expect(nbPairs).toBe(4);
@@ -73,16 +58,37 @@ describe('Services : boardService', function(){
 
         it('roll over when more cells than twice the number of cards', inject(function(boardService){
 
-          boardService.deal(4,3);
-          var cells = boardService.cells();
+          var board = boardService.deal(4,3);
+          for (var l = 0; l < 4; l++) {
+            for (var c = 0; c < 3; c++) {
+              var cell  = board[l][c];
+              expect(cell).not.toBeNull();
+              expect(cell.id).toBeGreaterThan(0);
+              expect(cell.card.id).toBeGreaterThan(0);
+            }
+          }
 
-          expect(cells.length).toBe(12);
-          expect(cells[0].card.id).toBe(0);
-          expect(cells[1].card.id).toBe(1);
-          expect(cells[2].card.id).toBe(2);
-          expect(cells[3].card.id).toBe(2);
-          expect(cells[8].card.id).toBe(1);
-          expect(cells[9].card.id).toBe(1);
+          //var cells = boardService.sortedCells();
+
+          //expect(cells.length).toBe(12);
+
+        }));
+
+    });
+
+
+    describe('On sortedCells', function(){
+
+       it('board is flatten and sorted', inject(function(boardService){
+
+          boardService.deal(2,4);
+          var cells = boardService.sortedCellsByCardId();
+
+          //expect(cells).toBeNull() ;
+          expect(cells.length).toBe(8) ;
+          expect(cells[0].card.id).toBe(1) ;
+          expect(cells[0].card.id).toBe(cells[1].card.id) ;
+          expect(cells[2].card.id).toBe(2) ;
 
         }));
 
@@ -92,8 +98,8 @@ describe('Services : boardService', function(){
 
        it('true if has same card id and different cell id', inject(function(boardService){
 
-          boardService.deal(2,3);
-          var cells = boardService.cells();
+          boardService.deal(2,4);
+          var cells = boardService.sortedCellsByCardId();
           var cell1 = cells[0];
           var cell2 = cells[1];
 
@@ -104,8 +110,8 @@ describe('Services : boardService', function(){
 
        it('false if has different card id', inject(function(boardService){
 
-          boardService.deal(2,3);
-          var cells = boardService.cells();
+          boardService.deal(2,4);
+          var cells = boardService.sortedCellsByCardId();
           var cell1 = cells[0];
           var cell2 = cells[2];
 
@@ -114,7 +120,6 @@ describe('Services : boardService', function(){
         }));
 
     });
-
 
 });
 
