@@ -2,6 +2,8 @@
 
 describe('Services : boardService', function(){
 
+  //TODO inverser width et height
+
     beforeEach(module('mytodoApp'));
 
     beforeEach(function () {
@@ -116,6 +118,19 @@ describe('Services : boardService', function(){
           var cell2 = cells[2];
 
           expect(boardService.match(cell1, cell2)).toBe(false) ;
+
+        }));
+
+    });
+
+    describe('On coordinates', function(){
+
+       it('find the cell coordinates', inject(function(boardService){
+
+          var board = boardService.deal(2,4);
+          var cell1 = board[1][2];
+
+          expect( boardService.coordinates(cell1) ).toEqual( [1,2] );
 
         }));
 

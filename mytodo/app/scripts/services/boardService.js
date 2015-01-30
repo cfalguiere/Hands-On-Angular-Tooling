@@ -74,4 +74,19 @@ angular.module('mytodoApp')
         return cell1.id !== cell2.id && cell1.card.id === cell2.card.id;
     };
 
+
+    this.coordinates = function(aCell) {
+      var notfound = true;
+      var coord = [];
+      for (var r=0; r<board.length; r++ && notfound) {
+        for (var c=0; c<board[r].length; c++ && notfound) {
+          if (aCell.id === board[r][c].id ) {
+            coord = [r, c];
+            notfound = false;
+          }
+        }
+      }
+      return coord;
+    };
+
 });

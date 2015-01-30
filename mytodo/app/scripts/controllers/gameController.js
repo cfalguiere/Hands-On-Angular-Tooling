@@ -10,21 +10,21 @@
  */
 
 angular.module('mytodoApp')
-  .controller('GameController', function ($scope, $window, boardService) {
+  .controller('GameController', function ($scope, $window, boardService /*, gameService*/) {
 
 
     var nbRows = 5;
     var nbColumns = 8;
 
-    $scope.board;
-    $scope.completed;
-    $scope.selectedCell;
-
+    $scope.board = boardService.deal(nbRows, nbColumns);
+    $scope.completed = false;
+    $scope.selectedCell = null;
+//TODO factorisation
 
     $scope.newGame = function () {
       $scope.board = boardService.deal(nbRows, nbColumns);
-      $scope.selectedCell = null;
       $scope.completed = false;
+      $scope.selectedCell = null;
     };
     $scope.newGame();
 
@@ -51,10 +51,12 @@ angular.module('mytodoApp')
           $scope.selectedCell = null;
         } else {
           if (cell.card.id === $scope.selectedCell.card.id) {
-            $scope.selectedCell.state = 'removed';
-            cell.state = 'removed';
-            $scope.selectedCell = null;
-            checkCompleted();
+            //if (gameService.acceptPair(cell, $scope.selectedCell) {
+              $scope.selectedCell.state = 'removed';
+              cell.state = 'removed';
+              $scope.selectedCell = null;
+              checkCompleted();
+            //}
           } else {
             $scope.selectedCell.state = 'placed';
             cell.state = 'selected';
@@ -64,7 +66,6 @@ angular.module('mytodoApp')
         }
 
       }
-
 
     };
 

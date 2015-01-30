@@ -7,36 +7,10 @@ describe('Controller: GameController', function () {
   // load the controller's module
   beforeEach(module('mytodoApp'));
 
-  beforeEach(function () {
-    var nl, nc;
-    var board = [
-                 [
-                   { id: 1, card: { id: 1, shape: 'heart', color: 'red' }, state: 'placed'},
-                   { id: 2, card: { id: 2, shape: 'heart', color: 'blue' }, state: 'placed'}
-                 ],
-                 [
-                   { id: 3, card: { id: 1, shape: 'heart', color: 'red' }, state: 'placed'},
-                   { id: 4, card: { id: 2, shape: 'heart', color: 'blue' }, state: 'placed'}
-                 ]
-               ];
-    var boardDependency =  {
-      sortedCells : function() {
-        var cells = board.reduce(function(acc, row){
-         return acc.concat(row);
-        });
-        return cells;
-      },
-      deal: function (anl,anc) {
-        nl = anl;
-        nc = anc;
-        return board;
-      }
-    };
+  // defines a 2x2 board
+  beforeEach(boardService2by2MockFunction);
 
-    module(function ($provide) {
-      $provide.value('boardService', boardDependency);
-    });
-  });
+  beforeEach(GameServiceMockFunction);
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
@@ -190,5 +164,7 @@ describe('Controller: GameController', function () {
     });
   });
 
+
+  //TODO test avec le pathfinding
 });
 

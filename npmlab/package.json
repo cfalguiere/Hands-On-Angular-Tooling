@@ -1,0 +1,17 @@
+{
+  "name": "formula",
+  "version": "0.0.0",
+  "description": "basic formula",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/.bin/jasmine-node spec",
+    "hello" : "Hello World!"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "jasmine-node": "~1.14.5"
+  }
+}
+
+
