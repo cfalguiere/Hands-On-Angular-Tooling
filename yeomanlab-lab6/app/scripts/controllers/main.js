@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name twinProjectApp.controller:MainCtrl
+ * @name twinApp.controller:MainCtrl
  * @description
  * # MainCtrl
- * Controller of the twinProjectApp
+ * Controller of the twinApp
  */
-angular.module('twinProjectApp')
+angular.module('twinApp')
   .controller('MainCtrl', function ($scope) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',

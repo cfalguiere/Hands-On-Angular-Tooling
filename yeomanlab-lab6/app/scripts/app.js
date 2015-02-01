@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc overview
- * @name twinProjectApp
+ * @name twinApp
  * @description
- * # twinProjectApp
+ * # twinApp
  *
  * Main module of the application.
  */
 angular
-  .module('twinProjectApp', [
+  .module('twinApp', [
     'ngCookies',
     'ngResource',
     'ngRoute',
