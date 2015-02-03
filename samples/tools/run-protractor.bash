@@ -1,4 +1,4 @@
-PROJECT_NAME=mytodo
+#PROJECT_NAME=yeomanlab
 TEST_CONFIG_FILE=test/e2e/protractor.conf.js
 
 CONTAINER_NAME=protractor
@@ -16,5 +16,5 @@ if [[ ! -z $CONTAINER_ID ]]; then
 fi
 
 echo "Starting protractor container"
-#sudo docker run --name $CONTAINER_NAME --volume /vagrant/${PROJECT_NAME}:/opt/protractor/project --env TEST_FILE=$TEST_CONFIG_FILE --link nginx_test:web $IMAGE_NAME
-sudo docker run --name $CONTAINER_NAME --volume /vagrant/${PROJECT_NAME}:/opt/protractor/project --env TEST_FILE=$TEST_CONFIG_FILE $IMAGE_NAME
+#sudo docker run --name $CONTAINER_NAME --volume $PWD:/opt/protractor/project --env TEST_FILE=$TEST_CONFIG_FILE --link nginx_test:web $IMAGE_NAME
+sudo docker run --name $CONTAINER_NAME --volume $PWD:/opt/protractor/project --env TEST_FILE=$TEST_CONFIG_FILE $IMAGE_NAME
