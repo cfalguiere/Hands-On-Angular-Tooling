@@ -78,6 +78,6 @@ angular.module('twinApp')
 
     this.getCellAt = function(row, column) {
       return board[row][column];
-    }
+    };
 
   });

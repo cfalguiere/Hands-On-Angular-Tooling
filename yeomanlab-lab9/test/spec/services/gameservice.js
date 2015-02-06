@@ -52,6 +52,7 @@ describe('Service: Gameservice', function () {
       Gameservice.reset();
       var cell1 = Boardservice.getCellAt(0,0);
       Gameservice.playCell(cell1);
+      Gameservice.reset();
       expect(Gameservice.getSelectedCell()).toBeNull();
     });
 

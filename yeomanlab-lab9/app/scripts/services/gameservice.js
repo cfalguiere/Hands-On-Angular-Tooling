@@ -15,16 +15,16 @@ angular.module('twinApp')
 
     function match(cell1, cell2) {
         return cell1.id !== cell2.id && cell1.card.id === cell2.card.id;
-    };
+    }
 
     this.reset = function() {
       board = Boardservice.deal();
       selectedCell = null;
-    }
+    };
 
     this.getBoard = function() {
       return board;
-    }
+    };
 
     this.playCell = function (cell) {
       if (selectedCell === null) {
@@ -37,7 +37,7 @@ angular.module('twinApp')
           cell.state = 'placed';
           selectedCell = null;
         } else {
-          if (cell.card.id === selectedCell.card.id) {
+          if (match(cell, selectedCell)) {
             selectedCell.state = 'removed';
             cell.state = 'removed';
             selectedCell = null;
@@ -48,12 +48,12 @@ angular.module('twinApp')
           }
         }
       }
-    }
+    };
 
 
     this.getSelectedCell = function () {
       return selectedCell;
-    }
+    };
 
     this.isCompleted = function () {
       var completed = board.reduce( function(acc, row) {
@@ -63,7 +63,7 @@ angular.module('twinApp')
         return acc && lineCompleted;
       }, true);
       return completed;
-    }
+    };
 
 
   });
