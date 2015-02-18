@@ -19,7 +19,7 @@ echo '######################'
 sudo apt-get install -y squid
 if [ ! -f /etc/squid3/squid.conf.original ]; then
   # avoid rewriting when provision is run again
-  sudo cp /etc/squid3/squid.conf
+  sudo cp /etc/squid3/squid.conf /etc/squid3/squid.conf.original
   sudo chmod a-w /etc/squid3/squid.conf.original
   sudo echo http_port 8888 >> /etc/squid3/squid.conf
   sudo sed -i '$a http_port 8888' /etc/squid3/squid.conf
