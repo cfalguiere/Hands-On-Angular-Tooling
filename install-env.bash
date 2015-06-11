@@ -36,7 +36,7 @@ if [ ! -f /etc/squid3/squid.conf.original ]; then
   sudo cat >/tmp/95proxies <<'EOT'
 Acquire::http::proxy "http://localhost:8888/";
 Acquire::ftp::proxy "ftp://localhost:8888/";
-Acquire::https::proxy "https://localhost:8888/";
+Acquire::https::proxy "http://localhost:8888/";
 EOT
   sudo mv /tmp/95proxies /etc/apt/apt.conf.d/95proxies
   sudo apt-get update
